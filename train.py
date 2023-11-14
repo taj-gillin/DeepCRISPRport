@@ -1,12 +1,11 @@
 import os
-from preprocess import get_ae_data, get_on_target_data, get_on_target_reg_data, get_off_target_data, get_off_target_reg_data
+from preprocess import *
 from models import *
 from utils import debug_print
 
-def train_ae():
+def train_ae(x_train, y_train, x_test, y_test, batch_size = 128, epochs = 10, model_file = './models/ae_weights.keras'):
     # Load data
     debug_print(["Training autoencoder..."])
-    x_train, y_train, x_test, y_test = get_ae_data()
     debug_print(["Data loaded. Test size: ", x_train.shape[0], ", Train size: ", x_test.shape[0]])
 
     # Init model
@@ -14,84 +13,71 @@ def train_ae():
     model.compile(optimizer='adam', loss='binary_crossentropy')
 
     # Train model
-    batch_size = 128
-    epochs = 10
-
     model.fit(x_train, y_train, epochs=epochs, batch_size=batch_size, shuffle=True, validation_data=(x_test, y_test))
 
     # Save model
-    model.save_weights('./models/ae_weights.keras')
+    debug_print(["Saving model weights."])
+    model.save_weights(model_file)
 
-def train_on_target():
+def train_on_target(x_train, y_train, x_test, y_test, encoder_file, batch_size = 128, epochs = 10):
     debug_print(["Training on-target model..."])
-    x_train, y_train, x_test, y_test = get_on_target_data()
     debug_print(["Data loaded. Test size: ", x_train.shape[0], ", Train size: ", x_test.shape[0]])
 
     # Init model
-    model = OnTarget()
+    model = OnTarget(encoder_file)
     model.compile(optimizer='adam', loss='binary_crossentropy')
 
     # Train model
-    batch_size = 128
-    epochs = 10
-
     model.fit(x_train, y_train, epochs=epochs, batch_size=batch_size, shuffle=True, validation_data=(x_test, y_test))
 
     # Save model
+    debug_print(["Saving model weights."])
     model.save_weights('./models/on_target_weights.keras')
 
-def train_on_target_reg():
+def train_on_target_reg(x_train, y_train, x_test, y_test, encoder_file, batch_size = 128, epochs = 10):
     debug_print(["Training on-target reg model..."])
-    x_train, y_train, x_test, y_test = get_on_target_reg_data()
     debug_print(["Data loaded. Test size: ", x_train.shape[0], ", Train size: ", x_test.shape[0]])
 
     # Init model
-    model = OnTargetReg()
+    model = OnTargetReg(encoder_file)
     model.compile(optimizer='adam', loss='mse')
 
     # Train model
-    batch_size = 128
-    epochs = 10
-
     model.fit(x_train, y_train, epochs=epochs, batch_size=batch_size, shuffle=True, validation_data=(x_test, y_test))
 
     # Save model
+    debug_print(["Saving model weights."])
     model.save_weights('./models/on_target_reg_weights.keras')
 
 
-def train_off_target():
+def train_off_target(x_train, y_train, x_test, y_test, encoder_file, batch_size = 128, epochs = 10):
     debug_print(["Training off-target model..."])
-    x_train, y_train, x_test, y_test = get_off_target_data()
     debug_print(["Data loaded. Test size: ", x_train[0].shape[0], ", Train size: ", x_test[0].shape[0]])
+
     # Init model
-    model = OffTarget()
+    model = OffTarget(encoder_file)
     model.compile(optimizer='adam', loss='binary_crossentropy')
 
     # Train model
-    batch_size = 128
-    epochs = 10
-
     model.fit(x_train, y_train, epochs=epochs, batch_size=batch_size, shuffle=True, validation_data=(x_test, y_test))
 
     # Save model
+    debug_print(["Saving model weights."])
     model.save_weights('./models/off_target_weights.keras')
 
-def train_off_target_reg():
+def train_off_target_reg(x_train, y_train, x_test, y_test, encoder_file, batch_size = 128, epochs = 10):
     debug_print(["Training off-target reg model..."])
-    x_train, y_train, x_test, y_test = get_off_target_reg_data()
     debug_print(["Data loaded. Test size: ", x_train[0].shape[0], ", Train size: ", x_test[0].shape[0]])
 
     # Init model
-    model = OffTargetReg()
+    model = OffTargetReg(encoder_file)
     model.compile(optimizer='adam', loss='mse')
 
     # Train model
-    batch_size = 128
-    epochs = 10
-
     model.fit(x_train, y_train, epochs=epochs, batch_size=batch_size, shuffle=True, validation_data=(x_test, y_test))
 
     # Save model
+    debug_print(["Saving model weights."])
     model.save_weights('./models/off_target_reg_weights.keras')
     
 

@@ -37,7 +37,7 @@ class DCDNN(tf.keras.Model):  # Deep Convolutionary Denoising Neural Network
     
 
 class OnTarget(tf.keras.Model):
-    def __init__(self, encoder_file = './models/ae_weights.keras'):
+    def __init__(self, encoder_file):
         super(OnTarget, self).__init__()
        
         # Encoder
@@ -77,7 +77,7 @@ class OnTarget(tf.keras.Model):
 
 
 class OnTargetReg(tf.keras.Model):
-    def __init__(self, encoder_file = './models/ae_weights.keras'):
+    def __init__(self, encoder_file):
         super(OnTargetReg, self).__init__()
        
         # Encoder
@@ -118,7 +118,7 @@ class OnTargetReg(tf.keras.Model):
     
 
 class OffTarget(tf.keras.Model):
-    def __init__(self, encoder_file = './models/ae_weights.keras'):
+    def __init__(self, encoder_file):
         super(OffTarget, self).__init__()
 
         # Target encoder
@@ -172,7 +172,7 @@ class OffTarget(tf.keras.Model):
     
 
 class OffTargetReg(tf.keras.Model):
-    def __init__(self, encoder_file = './models/ae_weights.keras'):
+    def __init__(self, encoder_file):
         super(OffTargetReg, self).__init__()
 
         # Target encoder
